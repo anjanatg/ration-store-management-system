@@ -1,0 +1,190 @@
+/* ---------- Basic ---------- */
+body {
+  background-color: #f4f7fb;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  position: fixed;          /* stays in place when scrolling */
+  top: 0;
+  left: 0;
+  width: 270px;
+  height: 100vh;
+  background-color: #14284b;
+  color: #fff;
+  padding: 20px 0;
+  overflow-y: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px 20px;
+}
+
+.brand-icon {
+  font-size: 32px;
+  color: #8bc34a;
+}
+
+.brand small {
+  color: #c5cde0;
+}
+
+.menu-title {
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #b8c2d9;
+  margin: 20px 20px 6px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.menu-item:hover,
+.menu-item.active {
+  background-color: #1f6fe5;
+}
+
+.sidebar-footer {
+  margin: 40px 20px 0;
+  font-size: 13px;
+  color: #b8c2d9;
+}
+
+/* ---------- Main area ---------- */
+.main-content {
+  margin-left: 270px;       /* same as sidebar width */
+}
+
+.topbar {
+  background-color: #fff;
+  padding: 15px 25px;
+  border-bottom: 1px solid #e3e8f0;
+}
+
+/* ---------- White boxes ---------- */
+.box {
+  background-color: #fff;
+  border: 1px solid #e3e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  height: 100%;
+}
+
+/* ---------- Summary cards ---------- */
+.stat-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid;
+  height: 100%;
+}
+
+.stat-card p  { margin: 0; color: #333; }
+.stat-card h3 { margin: 0; font-weight: 700; }
+
+.stat-icon {
+  font-size: 28px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Colors for each card (stat and quick-action share these) */
+.blue   { background-color: #eef4ff; border-color: #c9dcfb; }
+.green  { background-color: #ecf9f1; border-color: #bfe6cd; }
+.purple { background-color: #f3f1fd; border-color: #d6d0f5; }
+.orange { background-color: #fff4ec; border-color: #fbd9bd; }
+
+.blue   .stat-icon, .blue   i { color: #1f6fe5; }
+.green  .stat-icon, .green  i { color: #1a9d55; }
+.purple .stat-icon, .purple i { color: #5b3fd0; }
+.orange .stat-icon, .orange i { color: #f2751a; }
+
+/* ---------- Bar chart ---------- */
+.chart-numbers {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 220px;
+  padding-right: 12px;
+  font-size: 13px;
+  color: #444;
+  text-align: right;
+}
+
+.chart-bars {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 220px;
+  border-bottom: 1px solid #ccc;
+}
+
+.bar-wrap {
+  position: relative;
+  width: 14%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bar {
+  width: 55%;
+  background-color: #2f6fe4;
+  border-radius: 3px 3px 0 0;
+}
+
+.bar-wrap small {
+  position: absolute;
+  bottom: -25px;
+  color: #555;
+  white-space: nowrap;
+}
+
+.chart-bars { margin-bottom: 30px; }  /* space for month names */
+
+/* ---------- Quick actions ---------- */
+.action-card {
+  display: block;
+  padding: 20px;
+  border: 1px solid;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  height: 100%;
+}
+
+.action-card i {
+  display: block;
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.action-card:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- Small screens: hide sidebar ---------- */
+@media (max-width: 991px) {
+  .sidebar      { display: none; }
+  .main-content { margin-left: 0; }
+}
