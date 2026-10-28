@@ -1,0 +1,32 @@
+/* Full page with the same dark blue as the sidebar */
+.login-page {
+  min-height: 100vh;
+  background-color: #14284b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* White login card */
+.login-box {
+  background-color: #fff;
+  width: 100%;
+  max-width: 420px;
+  padding: 35px 30px;
+  border-radius: 10px;
+}
+
+.login-logo {
+  font-size: 48px;
+  color: #8bc34a;
+}
+
+/* Small text at the bottom */
+.login-footer {
+  margin-top: 20px;
+  color: #b8c2d9;
+  font-size: 13px;
+}
