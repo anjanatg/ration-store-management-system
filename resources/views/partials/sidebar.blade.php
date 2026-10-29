@@ -18,7 +18,7 @@
   </a>
 
   <p class="menu-title">Product Management</p>
-  <a href="#" class="menu-item">
+  <a href="{{ route('products.index') }}" class="menu-item {{ request()->is('users*') ? 'active' : '' }}">
     <i class="bi bi-box-seam-fill"></i> Products <i class="bi bi-chevron-right ms-auto"></i>
   </a>
 
@@ -36,7 +36,10 @@
   <a href="#" class="menu-item">
     <i class="bi bi-truck"></i> Distribution <i class="bi bi-chevron-right ms-auto"></i>
   </a>
-
+  <a href="{{ route('categories.index') }}" class="menu-item">
+    <i class="bi bi-tags"></i>
+    <span>Categories</span>
+  </a>
   <p class="menu-title">Reports</p>
   <a href="#" class="menu-item">
     <i class="bi bi-file-earmark-text-fill"></i> Reports <i class="bi bi-chevron-right ms-auto"></i>
