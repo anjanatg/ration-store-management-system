@@ -20,7 +20,7 @@ class UserService
     {
         $query = User::where('role', 'user');
         if ($search) {
-            $query->whereAny(['name', 'email', 'department'], 'like', '%' . $search . '%');
+            $query->whereAny(['name', 'email'], 'like', '%' . $search . '%');
         }
         return $query->latest()->get();
     }

@@ -1,13 +1,13 @@
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
   <div class="brand">
     <i class="bi bi-basket2-fill brand-icon"></i>
     <div>
       <h5 class="mb-0">Ration Store</h5>
       <small>Management System</small>
     </div>
+    <button type="button" id="sidebarClose" class="btn-close btn-close-white ms-auto d-lg-none"></button>
   </div>
 
-  <!-- request()->is('dashboard') is true when the current page is /dashboard -->
   <a href="{{ route('admin.dashboard') }}" class="menu-item {{ request()->is('dashboard') ? 'active' : '' }}">
     <i class="bi bi-house-door-fill"></i> Dashboard
   </a>
