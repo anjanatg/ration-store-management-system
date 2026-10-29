@@ -1,5 +1,7 @@
 <div class="topbar d-flex align-items-center justify-content-between">
-  <i class="bi bi-list fs-4"></i>
+  <button type="button" id="sidebarToggle" class="btn border-0">
+    <i class="bi bi-list fs-4"></i>
+  </button>
 
   <div class="d-flex align-items-center gap-4">
     <span class="position-relative">

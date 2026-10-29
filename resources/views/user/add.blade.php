@@ -1,25 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'Add User')
+@section('title', 'Add Staff')
 
 @section('content')
 
-  <h2 class="fw-bold">Add User</h2>
+  <h2 class="fw-bold">Add Staff</h2>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-      <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Users</a></li>
-      <li class="breadcrumb-item active">Add User</li>
+      <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Stafflist</a></li>
+      <li class="breadcrumb-item active">Add Staff</li>
     </ol>
   </nav>
 
   <div class="box">
-    <h5 class="fw-bold mb-4"><i class="bi bi-person-plus-fill text-primary"></i> User Details</h5>
+    <h5 class="fw-bold mb-4"><i class="bi bi-person-plus-fill text-primary"></i> Staff Details</h5>
 
     <form id="userForm" data-mode="add" action="{{ route('admin.users.store') }}" method="post" novalidate>
       @csrf
-
-      <!-- Error message from the server -->
       <div id="userAlert" class="alert alert-danger d-none"></div>
 
       <div class="row g-3">

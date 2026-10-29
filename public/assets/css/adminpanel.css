@@ -6,7 +6,7 @@ body {
 
 /* ---------- Sidebar ---------- */
 .sidebar {
-  position: fixed;          /* stays in place when scrolling */
+  position: fixed;         
   top: 0;
   left: 0;
   width: 270px;
@@ -15,6 +15,12 @@ body {
   color: #fff;
   padding: 20px 0;
   overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+/* Sidebar hidden */
+.sidebar.sidebar-hidden {
+    transform: translateX(-100%);
 }
 
 .brand {
@@ -63,8 +69,15 @@ body {
 
 /* ---------- Main area ---------- */
 .main-content {
-  margin-left: 270px;       /* same as sidebar width */
+  margin-left: 270px;
+  transition: margin-left 0.3s ease;
 }
+
+
+.main-content.expanded {
+    margin-left: 0;
+}      
+
 
 .topbar {
   background-color: #fff;
@@ -183,8 +196,18 @@ body {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
 }
 
-/* ---------- Small screens: hide sidebar ---------- */
+/* ---------- Small screens: sidebar hidden by default ---------- */
 @media (max-width: 991px) {
-  .sidebar      { display: none; }
-  .main-content { margin-left: 0; }
+  .sidebar {
+    transform: translateX(-100%);   
+    z-index: 1000;                  
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0);      
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
 }

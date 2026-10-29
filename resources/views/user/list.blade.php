@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Users')
+@section('title', 'Staff')
 
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-            <h2 class="fw-bold mb-0">Users</h2>
+            <h2 class="fw-bold mb-0">Staff</h2>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Users</li>
+                    <li class="breadcrumb-item active">Stafflist</li>
                 </ol>
             </nav>
         </div>
@@ -22,13 +22,6 @@
         <form action="{{ route('admin.users.index') }}" method="get" class="row g-2 mb-3">
             <div class="col-md-4">
                 <input type="text" name="search" class="form-control" placeholder="Search by name or email">
-            </div>
-            <div class="col-md-2">
-                <select name="role" class="form-select">
-                    <option value="">All Roles</option>
-                    <option value="admin">Admin</option>
-                    <option value="operator">Operator</option>
-                </select>
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-outline-primary"><i class="bi bi-search"></i> Search</button>
