@@ -18,7 +18,7 @@ class UserService
 
     public function listUsers(?string $search): Collection
     {
-        $query = User::where('role', 'user');
+        $query = User::where('role', 'staff');
         if ($search) {
             $query->whereAny(['name', 'email'], 'like', '%' . $search . '%');
         }
@@ -27,7 +27,7 @@ class UserService
 
     public function userById(int $id): User
     {
-        return User::where('role', 'user')->findOrFail($id);
+        return User::where('role', 'staff')->findOrFail($id);
     }
 
     public function createUser(array $data): User
@@ -36,7 +36,7 @@ class UserService
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => 'user',
+            'role' => 'staff',
             'is_active' => true,
             'age' => $data['age'] ?? null,
             'phone' => $data['phone'] ?? null,

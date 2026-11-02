@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Models\card_categories;
+use App\Models\RationCategory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -21,12 +22,22 @@ class CategoryRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
+
     public function rules(): array
     {
-        $categoryId = $this->route('id');
+        if ($this->routeIs('card-categories.store')) {
+            $model = new card_categories();
+        } else {
+            $model = new RationCategory();
+        }
 
         return [
-            'name' => ['required','string','max:255',Rule::unique('ration_categories', 'name')->ignore($categoryId)],
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique($model->getTable(), 'name'),
+            ],
         ];
     }
 
@@ -34,8 +45,8 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'Please enter the category name.',
-            'name.unique' => 'This category already exists.',
-            'name.max' => 'The category name cannot exceed 255 characters.',
+            'name.unique'   => 'This category already exists.',
+            'name.max'      => 'The category name cannot exceed 100 characters.',
         ];
     }
 }

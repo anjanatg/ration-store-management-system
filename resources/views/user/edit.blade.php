@@ -7,26 +7,22 @@
   <h2 class="fw-bold">Edit Staff</h2>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
       <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Users</a></li>
       <li class="breadcrumb-item active">Edit Staff</li>
     </ol>
   </nav>
-
   <div class="box">
     <h5 class="fw-bold mb-4"><i class="bi bi-pencil-square text-primary"></i> Edit User Details</h5>
-
     <form id="userForm" method="post" data-mode="edit" novalidate>
       @csrf
       @method('PUT')
-
       <div class="row g-3">
-
         <div class="col-md-6">
           <label for="name" class="form-label">Full Name</label>
           <input type="text" id="name" name="name" class="form-control" value="{{ $user->name }}" required>
         </div>
-
+        
         <div class="col-md-6">
           <label for="email" class="form-label">Email</label>
           <input type="email" id="email" name="email" class="form-control" value="{{ $user->email }}" required>

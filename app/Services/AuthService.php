@@ -37,8 +37,7 @@ class AuthService
     {
         return match ($user->role)
         {
-           'admin' => 'admin.dashboard',
-           'staff' => 'staff.dashboard',
+           'admin', 'staff' => 'dashboard',
            default => null,
         };
     }

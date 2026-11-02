@@ -7,20 +7,16 @@
   <h2 class="fw-bold">Add Product</h2>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
       <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Products</a></li>
       <li class="breadcrumb-item active">Add Product</li>
     </ol>
   </nav>
-
   <div class="box">
     <h5 class="fw-bold mb-4"><i class="bi bi-box-seam-fill text-primary"></i> Product Details</h5>
-
     <form method="POST" id="productForm" novalidate>
       @csrf
-
       <div id="productAlert" class="alert alert-danger d-none"></div>
-
       <div class="row g-3">
         <div class="col-md-6">
           <label for="name" class="form-label">Product Name</label>
@@ -45,7 +41,6 @@
             <div class="invalid-feedback">{{ $message }}</div>
           @enderror
         </div>
-
         <div class="col-md-6">
           <label for="unit" class="form-label">Unit</label>
           <select name="unit" id="unit" class="form-select @error('unit') is-invalid @enderror">

@@ -4,7 +4,7 @@
 
 @section('content')
 
-  <!-- Page heading -->
+
   <div class="d-flex justify-content-between align-items-start">
     <div>
       <h2 class="fw-bold">Dashboard</h2>
@@ -13,7 +13,7 @@
     <span class="text-secondary"><i class="bi bi-calendar3"></i> {{ now()->format('l, d F Y') }}</span>
   </div>
 
-  <!-- ===== Summary cards ===== -->
+
   <div class="row g-3 mb-4">
 
     <div class="col-md-6 col-xl-3">
@@ -62,10 +62,10 @@
 
   </div>
 
-  <!-- ===== Chart + Low stock ===== -->
+
   <div class="row g-3 mb-4">
 
-    <!-- Monthly distribution chart (plain CSS bars) -->
+
     <div class="col-lg-7">
       <div class="box">
         <h5 class="fw-bold mb-4">Monthly Distribution</h5>
@@ -75,7 +75,6 @@
             <span>1,000</span><span>800</span><span>600</span><span>400</span><span>200</span><span>0</span>
           </div>
 
-          <!-- bar height % = value / 1000 -->
           <div class="chart-bars">
             <div class="bar-wrap"><div class="bar" style="height: 50%"></div><small>Apr 2025</small></div>
             <div class="bar-wrap"><div class="bar" style="height: 47%"></div><small>May 2025</small></div>
@@ -89,7 +88,7 @@
       </div>
     </div>
 
-    <!-- Low stock alerts -->
+
     <div class="col-lg-5">
       <div class="box">
         <div class="d-flex justify-content-between mb-3">
@@ -114,10 +113,9 @@
 
   </div>
 
-  <!-- ===== Recent distributions + Quick actions ===== -->
   <div class="row g-3">
 
-    <!-- Recent distributions -->
+
     <div class="col-lg-7">
       <div class="box">
         <div class="d-flex justify-content-between mb-3">
@@ -142,7 +140,7 @@
       </div>
     </div>
 
-    <!-- Quick actions -->
+
     <div class="col-lg-5">
       <div class="box">
         <h5 class="fw-bold mb-3"><i class="bi bi-lightning-charge"></i> Quick Actions</h5>

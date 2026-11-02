@@ -8,12 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
-     */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
         $user = $request->user();
 
@@ -21,7 +16,7 @@ class AuthMiddleware
             return redirect()->route('login');
         }
 
-        if ($user->role !== $role) {
+        if (! in_array($user->role, $roles)) {
             abort(403, 'You are not allowed to access this page.');
         }
 

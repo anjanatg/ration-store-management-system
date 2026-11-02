@@ -9,7 +9,7 @@
             <h2 class="fw-bold mb-0">Staff</h2>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Stafflist</li>
                 </ol>
             </nav>
@@ -62,8 +62,7 @@
                                     <i class="bi bi-pencil"></i> Edit
                                 </a>
 
-                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="post" class="d-inline"
-                                    onsubmit="return confirm('Delete this user?')">
+                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="post" class="d-inline" onsubmit="return confirm('Delete this user?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
