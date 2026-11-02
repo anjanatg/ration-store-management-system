@@ -12,18 +12,13 @@
       <li class="breadcrumb-item active">Edit Product</li>
     </ol>
   </nav>
-
   <div class="box">
     <h5 class="fw-bold mb-4"><i class="bi bi-pencil-square text-primary"></i> Edit Product Details</h5>
-
     <form method="POST" id="productForm" novalidate>
       @csrf
       @method('PUT')
-
       <div id="productAlert" class="alert alert-danger d-none"></div>
-
       <div class="row g-3">
-
         <div class="col-md-6">
           <label for="name" class="form-label">Product Name</label>
           <input type="text" name="name" id="name"
@@ -50,7 +45,6 @@
           @enderror
         </div>
 
-
         <div class="col-md-6">
           <label for="unit" class="form-label">Unit</label>
           <select name="unit" id="unit" class="form-select @error('unit') is-invalid @enderror">
@@ -64,7 +58,6 @@
           @enderror
         </div>
 
-
         <div class="col-md-6">
           <label for="price" class="form-label">Price (₹)</label>
           <input type="number" name="price" id="price" min="0" step="0.01"
@@ -75,7 +68,6 @@
           @enderror
         </div>
 
-
         <div class="col-md-6">
           <label for="available_stock" class="form-label">Available Stock</label>
           <input type="number" name="available_stock" id="available_stock" min="0" step="0.01"
@@ -85,7 +77,6 @@
             <div class="invalid-feedback">{{ $message }}</div>
           @enderror
         </div>
-
       </div>
 
       <div class="mt-4">
