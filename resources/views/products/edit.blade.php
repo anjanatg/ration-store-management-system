@@ -7,7 +7,7 @@
   <h2 class="fw-bold">Edit Product</h2>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
       <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Products</a></li>
       <li class="breadcrumb-item active">Edit Product</li>
     </ol>

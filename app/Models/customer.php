@@ -3,7 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Customer extends Model
 {
     protected $fillable = [
@@ -17,5 +17,9 @@ class Customer extends Model
     public function cardCategory(): BelongsTo
     {
         return $this->belongsTo(card_categories::class);
+    }
+    public function distributions(): HasMany
+    {
+        return $this->hasMany(Distribution::class);
     }
 }
