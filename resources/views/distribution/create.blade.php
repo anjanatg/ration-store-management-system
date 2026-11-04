@@ -84,7 +84,8 @@
                                             <input type="number" step="0.01" min="0"
                                                    name="quantities[{{ $row['product']->id }}]"
                                                    class="form-control"
-                                                   value="{{ old('quantities.' . $row['product']->id, $row['remaining']) }}">
+                                                   value="{{ old('quantities.' . $row['product']->id, $row['remaining']) }}"
+                                                   {{ $row['remaining'] <= 0 ? 'readonly' : '' }}>
                                         </td>
                                     </tr>
                                 @empty

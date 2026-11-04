@@ -16,9 +16,12 @@ class AuthController extends Controller
     {
         try {
             $result = $this->authService->login( $request->validated(),$request );
-
-            if ($result === 'invalid') { return response()->json(['errors' => ['login' => ['Invalid email or password']]], 422);}
-            if ($result === 'inactive') { return response()->json(['errors' => ['login' => ['Your account is deactivated']]], 422);}
+            if ($result === 'invalid') { 
+                return response()->json(['errors' => ['login' => ['Invalid email or password']]], 422);
+            }
+            if ($result === 'inactive') { 
+                return response()->json(['errors' => ['login' => ['Your account is deactivated']]], 422);
+            }
             $route = $this->authService->dashboard(Auth::user());
 
             if ($route === null) { 

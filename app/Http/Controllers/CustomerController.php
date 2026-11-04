@@ -19,37 +19,24 @@ class CustomerController extends Controller
     {
         try {
             $search = $request->input('search');
-
             $customers = $this->customerService->getAllCustomers($search);
-
             return view('customers.index', compact('customers', 'search'));
 
         } catch (Throwable $e) {
             report($e);
-
-            return back()->with(
-                'error',
-                'Unable to load customers. Please try again.'
-            );
+            return back()->with('error','Unable to load customers. Please try again.');
         }
     }
 
     public function create()
     {
         try {
-            $categories = card_categories::where('is_active', true)
-                ->orderBy('name')
-                ->get();
-
+            $categories = card_categories::where('is_active', true)->orderBy('name')->get();
             return view('customers.create', compact('categories'));
 
         } catch (Throwable $e) {
             report($e);
-
-            return back()->with(
-                'error',
-                'Unable to open the customer registration page. Please try again.'
-            );
+            return back()->with('error','Unable to open the customer registration page. Please try again.');
         }
     }
 
@@ -57,57 +44,35 @@ class CustomerController extends Controller
     {
         try {
             $this->customerService->createCustomer($request->validated());
-
-            return redirect()
-                ->route('customers.index')
-                ->with('success', 'Customer added successfully.');
+            return redirect()->route('customers.index')->with('success', 'Customer added successfully.');
 
         } catch (Throwable $e) {
             report($e);
-
-            return back()
-                ->withInput()
-                ->with('error', 'Unable to add customer. Please try again.');
+            return back()->withInput()->with('error', 'Unable to add customer. Please try again.');
         }
     }
 
     public function edit(Customer $customer)
     {
         try {
-            $categories = card_categories::where('is_active', true)
-                ->orderBy('name')
-                ->get();
-
+            $categories = card_categories::where('is_active', true)->orderBy('name')->get();
             return view('customers.edit', compact('customer', 'categories'));
 
         } catch (Throwable $e) {
             report($e);
-
-            return back()->with(
-                'error',
-                'Unable to open the customer details. Please try again.'
-            );
+            return back()->with('error','Unable to open the customer details. Please try again.');
         }
     }
 
     public function update(CustomerRequest $request, Customer $customer)
     {
         try {
-            $this->customerService->updateCustomer(
-                $customer,
-                $request->validated()
-            );
-
-            return redirect()
-                ->route('customers.index')
-                ->with('success', 'Customer updated successfully.');
+            $this->customerService->updateCustomer($customer,$request->validated());
+            return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
 
         } catch (Throwable $e) {
             report($e);
-
-            return back()
-                ->withInput()
-                ->with('error', 'Unable to update customer. Please try again.');
+            return back()->withInput()->with('error', 'Unable to update customer. Please try again.');
         }
     }
 
@@ -115,18 +80,11 @@ class CustomerController extends Controller
     {
         try {
             $this->customerService->deleteCustomer($customer);
-
-            return redirect()
-                ->route('customers.index')
-                ->with('success', 'Customer deleted successfully.');
+            return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
 
         } catch (Throwable $e) {
             report($e);
-
-            return back()->with(
-                'error',
-                'Unable to delete customer. Please try again.'
-            );
+            return back()->with('error','Unable to delete customer. Please try again.');
         }
     }
 }

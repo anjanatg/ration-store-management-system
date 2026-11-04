@@ -24,12 +24,8 @@ class StockService
     {
         return DB::transaction(function () use ($data) {
 
-            $product = Product::where('id', $data['product_id'])
-                ->lockForUpdate()
-                ->firstOrFail();
-
+            $product = Product::where('id', $data['product_id'])->lockForUpdate()->firstOrFail();
             $product->increment('available_stock', $data['quantity']);
-
             return Stock::create($data);
         });
     }
@@ -38,18 +34,13 @@ class StockService
     {
         return DB::transaction(function () use ($data) {
 
-            $product = Product::where('id', $data['product_id'])
-                ->lockForUpdate()
-                ->firstOrFail();
-
+            $product = Product::where('id', $data['product_id'])->lockForUpdate()->firstOrFail();
             if ($product->available_stock < $data['quantity']) {
-                throw ValidationException::withMessages([
-                    'quantity' => 'Insufficient stock available.',
+                throw ValidationException::withMessages(['quantity' => 'Insufficient stock available.',
                 ]);
             }
 
             $product->decrement('available_stock', $data['quantity']);
-
             return Stock::create($data);
         });
     }

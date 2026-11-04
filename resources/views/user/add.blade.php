@@ -7,7 +7,7 @@
   <h2 class="fw-bold">Add Staff</h2>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
       <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Stafflist</a></li>
       <li class="breadcrumb-item active">Add Staff</li>
     </ol>

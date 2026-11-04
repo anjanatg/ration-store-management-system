@@ -16,27 +16,30 @@ class ReportController extends Controller
 
     public function index(ReportFilterRequest $request)
     {
-        $reports = $this->reportService->getDistributionReport($request->validated());
+        try {
+            $reports = $this->reportService->getDistributionReport($request->validated());
+            $customers = Customer::all();
+            $products = Product::where('is_active', true)->get();
+            $cardCategories = card_categories::where('is_active', true)->get();
 
-        $customers = Customer::all();
-        $products = Product::where('is_active', true)->get();
-        $cardCategories = card_categories::where('is_active', true)->get();
-
-        return view('reports.index', compact('reports', 'customers', 'products', 'cardCategories'));
+            return view('reports.index', compact('reports', 'customers', 'products', 'cardCategories'));
+        }
+        catch (\Throwable $e) {
+            report($e);
+            return redirect()->route('dashboard')->with('error', 'Unable to load the report. Please try again.');
+        }
     }
 
     public function export(ReportFilterRequest $request)
     {
-        $reports = $this->reportService->getDistributionReport($request->validated());
+        try {
+            $reports = $this->reportService->getDistributionReport($request->validated());
 
-        return response()->streamDownload(function () use ($reports) {
-            $file = fopen('php://output', 'w');
-
-            fputcsv($file, ['Date', 'Customer', 'Ration Card', 'Category', 'Product', 'Quantity', 'Operator']);
+            $csv = "Date,Customer,Ration Card,Category,Product,Quantity,Operator\n";
 
             foreach ($reports as $report) {
                 foreach ($report->items as $item) {
-                    fputcsv($file, [
+                    $csv .= implode(',', [
                         $report->distribution_date->format('d-m-Y'),
                         $report->customer->name,
                         $report->customer->ration_card_number,
@@ -44,11 +47,17 @@ class ReportController extends Controller
                         $item->product->name,
                         $item->quantity . ' ' . $item->product->unit,
                         $report->operator->name,
-                    ]);
+                    ]) . "\n";
                 }
             }
 
-            fclose($file);
-        }, 'distribution-report.csv', ['Content-Type' => 'text/csv']);
+            return response($csv)
+                ->header('Content-Type', 'text/csv')
+                ->header('Content-Disposition', 'attachment; filename="distribution-report.csv"');
+        }
+        catch (\Throwable $e) {
+            report($e);
+            return redirect()->route('reports.index')->with('error', 'Unable to export the report. Please try again.');
+        }
     }
 }

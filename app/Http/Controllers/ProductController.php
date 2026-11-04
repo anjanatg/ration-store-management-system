@@ -41,10 +41,7 @@ class ProductController extends Controller
     public function edit(int $id)
     {
         $product = $this->productService->ProductById($id);
-        $categories = RationCategory::where('is_active', true)
-            ->orWhere('id', $product->category_id)
-            ->orderBy('name')
-            ->get();
+        $categories = RationCategory::where('is_active', true)->orWhere('id', $product->category_id)->orderBy('name')->get();
         return view('products.edit', compact('product', 'categories'));
     }
 

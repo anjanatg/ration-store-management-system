@@ -3,7 +3,6 @@
 @section('title', 'Add Product')
 
 @section('content')
-
   <h2 class="fw-bold">Add Product</h2>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -86,7 +85,6 @@
 @endsection
 
 @push('scripts')
-    <script>const PRODUCT_URL = "{{ route('products.store') }}";</script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
-    <script src="{{ asset('assets/js/product-form.js') }}"></script>
+<script>const PRODUCT_URL = "{{ route('products.store') }}";</script>
+<script src="{{ asset('assets/js/product-form.js') }}"></script>
 @endpush
