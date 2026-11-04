@@ -22,7 +22,11 @@ body {
 .sidebar.sidebar-hidden {
     transform: translateX(-100%);
 }
-
+.bar-count {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
 .brand {
   display: flex;
   align-items: center;

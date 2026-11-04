@@ -16,11 +16,11 @@
     </a>
 
     @if(auth()->user()->role === 'admin')
-        <p class="menu-title">User Management</p>
+        <p class="menu-title">Staff Management</p>
         <a href="{{ route('admin.users.index') }}"
            class="menu-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
             <i class="bi bi-person-fill"></i>
-            Users
+            Staff
             <i class="bi bi-chevron-right ms-auto"></i>
         </a>
 

@@ -16,7 +16,6 @@ class DistributionController extends Controller
     public function index()
     {
         $distributions = $this->distributionService->getAllDistributions();
-
         return view('distribution.index', compact('distributions'));
     }
 
@@ -41,8 +40,6 @@ class DistributionController extends Controller
     {
         $this->distributionService->store($request->validated(), auth()->id());
 
-        return redirect()
-            ->route('distribution.index')
-            ->with('success', 'Ration distributed successfully.');
+        return redirect()->route('distribution.index')->with('success', 'Ration distributed successfully.');
     }
 }

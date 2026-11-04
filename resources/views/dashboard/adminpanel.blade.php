@@ -4,7 +4,6 @@
 
 @section('content')
 
-
   <div class="d-flex justify-content-between align-items-start">
     <div>
       <h2 class="fw-bold">Dashboard</h2>
@@ -13,7 +12,7 @@
     <span class="text-secondary"><i class="bi bi-calendar3"></i> {{ now()->format('l, d F Y') }}</span>
   </div>
 
-
+  {{-- Top statistic cards --}}
   <div class="row g-3 mb-4">
 
     <div class="col-md-6 col-xl-3">
@@ -21,9 +20,8 @@
         <i class="bi bi-people-fill stat-icon"></i>
         <div>
           <p>Total Customers</p>
-          <h3>124</h3>
+          <h3>{{ $totalCustomers }}</h3>
         </div>
-        <small class="text-success w-100"><i class="bi bi-arrow-up"></i> 5 new this month</small>
       </div>
     </div>
 
@@ -32,9 +30,8 @@
         <i class="bi bi-box-seam stat-icon"></i>
         <div>
           <p>Total Products</p>
-          <h3>32</h3>
+          <h3>{{ $totalProducts }}</h3>
         </div>
-        <small class="text-success w-100"><i class="bi bi-arrow-up"></i> 2 new this month</small>
       </div>
     </div>
 
@@ -43,9 +40,12 @@
         <i class="bi bi-database-fill stat-icon"></i>
         <div>
           <p>Available Stock</p>
-          <h3>5,680 kg / L</h3>
+          @forelse ($stockByUnit as $stock)
+            <div class="fw-bold">{{ number_format($stock->total_stock, 2) }} {{ $stock->unit }}</div>
+          @empty
+            <div class="fw-bold">0</div>
+          @endforelse
         </div>
-        <small class="text-success w-100"><i class="bi bi-arrow-up"></i> 8% from last month</small>
       </div>
     </div>
 
@@ -54,58 +54,59 @@
         <i class="bi bi-truck stat-icon"></i>
         <div>
           <p>Monthly Distributions</p>
-          <h3>892</h3>
+          <h3>{{ $monthlyDistributions }}</h3>
         </div>
-        <small class="text-success w-100"><i class="bi bi-arrow-up"></i> 15% from last month</small>
+        <small class="text-secondary w-100">In {{ now()->format('F Y') }}</small>
       </div>
     </div>
 
   </div>
 
-
   <div class="row g-3 mb-4">
 
-
+    {{-- Monthly distribution chart --}}
     <div class="col-lg-7">
       <div class="box">
         <h5 class="fw-bold mb-4">Monthly Distribution</h5>
 
-        <div class="d-flex">
-          <div class="chart-numbers">
-            <span>1,000</span><span>800</span><span>600</span><span>400</span><span>200</span><span>0</span>
-          </div>
+        @php
+          // Highest month is the 100% bar (at least 1 to avoid dividing by zero)
+          $maxTotal = max($monthlyChart->max('total'), 1);
+        @endphp
 
-          <div class="chart-bars">
-            <div class="bar-wrap"><div class="bar" style="height: 50%"></div><small>Apr 2025</small></div>
-            <div class="bar-wrap"><div class="bar" style="height: 47%"></div><small>May 2025</small></div>
-            <div class="bar-wrap"><div class="bar" style="height: 53%"></div><small>Jun 2025</small></div>
-            <div class="bar-wrap"><div class="bar" style="height: 69%"></div><small>Jul 2025</small></div>
-            <div class="bar-wrap"><div class="bar" style="height: 63%"></div><small>Aug 2025</small></div>
-            <div class="bar-wrap"><div class="bar" style="height: 60%"></div><small>Sep 2025</small></div>
-            <div class="bar-wrap"><div class="bar" style="height: 52%"></div><small>Oct 2025</small></div>
-          </div>
+        <div class="chart-bars">
+          @foreach ($monthlyChart as $month)
+            <div class="bar-wrap">
+              <span class="bar-count">{{ $month['total'] }}</span>
+              <div class="bar" style="height: {{ $month['total'] / $maxTotal * 100 }}%"></div>
+              <small>{{ $month['label'] }}</small>
+            </div>
+          @endforeach
         </div>
       </div>
     </div>
 
-
+    {{-- Low stock alerts --}}
     <div class="col-lg-5">
       <div class="box">
         <div class="d-flex justify-content-between mb-3">
           <h5 class="fw-bold"><i class="bi bi-exclamation-triangle-fill text-danger"></i> Low Stock Alerts</h5>
-          <a href="#" class="text-decoration-none">View All</a>
+          <a href="{{ route('products.index') }}" class="text-decoration-none">View All</a>
         </div>
 
         <table class="table table-sm align-middle">
           <thead class="table-light">
-            <tr><th>Product</th><th>Current Stock</th><th>Minimum Level</th><th></th></tr>
+            <tr><th>Product</th><th>Current Stock</th></tr>
           </thead>
           <tbody>
-            <tr><td>Sugar</td><td class="text-danger">12 kg</td><td class="text-danger">50 kg</td><td><i class="bi bi-chevron-right"></i></td></tr>
-            <tr><td>Cooking Oil</td><td class="text-danger">5 L</td><td class="text-danger">20 L</td><td><i class="bi bi-chevron-right"></i></td></tr>
-            <tr><td>Wheat Flour</td><td>18 kg</td><td class="text-danger">50 kg</td><td><i class="bi bi-chevron-right"></i></td></tr>
-            <tr><td>Kerosene Oil</td><td class="text-danger">8 L</td><td class="text-danger">30 L</td><td><i class="bi bi-chevron-right"></i></td></tr>
-            <tr><td>Tea Powder</td><td>15 kg</td><td class="text-danger">40 kg</td><td><i class="bi bi-chevron-right"></i></td></tr>
+            @forelse ($lowStockProducts as $product)
+              <tr>
+                <td>{{ $product->name }}</td>
+                <td class="text-danger">{{ (float) $product->available_stock }} {{ $product->unit }}</td>
+              </tr>
+            @empty
+              <tr><td colspan="2" class="text-center text-secondary">No low stock products.</td></tr>
+            @endforelse
           </tbody>
         </table>
       </div>
@@ -116,38 +117,14 @@
   <div class="row g-3">
 
 
-    <div class="col-lg-7">
-      <div class="box">
-        <div class="d-flex justify-content-between mb-3">
-          <h5 class="fw-bold"><i class="bi bi-truck"></i> Recent Distributions</h5>
-          <a href="#" class="text-decoration-none">View All</a>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table table-sm align-middle">
-            <thead class="table-light">
-              <tr><th>Date</th><th>Customer</th><th>Products</th><th>Operator</th><th>Status</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>23 Oct 2025</td><td>Lakshmi K.</td><td>Rice (10 kg), Wheat (5 kg)</td><td>Suresh</td><td><span class="badge bg-success-subtle text-success">Completed</span></td></tr>
-              <tr><td>22 Oct 2025</td><td>Rajesh P.</td><td>Rice (10 kg), Sugar (2 kg)</td><td>Anitha</td><td><span class="badge bg-success-subtle text-success">Completed</span></td></tr>
-              <tr><td>22 Oct 2025</td><td>Priya S.</td><td>Wheat (5 kg), Oil (1 L)</td><td>Suresh</td><td><span class="badge bg-success-subtle text-success">Completed</span></td></tr>
-              <tr><td>21 Oct 2025</td><td>Mohan T.</td><td>Rice (10 kg)</td><td>Anitha</td><td><span class="badge bg-success-subtle text-success">Completed</span></td></tr>
-              <tr><td>21 Oct 2025</td><td>Meena R.</td><td>Sugar (2 kg), Tea (1 kg)</td><td>Suresh</td><td><span class="badge bg-success-subtle text-success">Completed</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="col-lg-5">
+    {{-- Quick actions --}}
+    <div class="col-lg-12">
       <div class="box">
         <h5 class="fw-bold mb-3"><i class="bi bi-lightning-charge"></i> Quick Actions</h5>
 
         <div class="row g-3">
           <div class="col-6">
-            <a href="#" class="action-card blue">
+            <a href="{{ route('products.create') }}" class="action-card blue">
               <i class="bi bi-box-seam-fill"></i>
               <span>Add Product</span>
             </a>

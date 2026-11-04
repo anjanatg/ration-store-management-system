@@ -36,4 +36,17 @@ class DistributionRequest extends FormRequest
             'quantities.*.min'           => 'A quantity cannot be negative.',
         ];
     }
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($validator->errors()->isNotEmpty()) {
+                return;
+            }
+            $total = array_sum($this->quantities);
+
+            if ($total <= 0) {
+                $validator->errors()->add('quantities', 'Enter a quantity greater than 0 for at least one product.');
+            }
+        });
+    }
 }

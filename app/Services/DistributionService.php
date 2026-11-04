@@ -14,108 +14,94 @@ class DistributionService
 {
     public function getAllDistributions()
     {
-        return Distribution::with(['customer', 'operator', 'items.product'])
-            ->latest('distribution_date')
-            ->latest('id')
-            ->get();
+        return Distribution::with([
+            'customer',
+            'operator',
+            'items.product'
+        ])->latest()->get();
     }
-
     public function getCustomerEntitlements(Customer $customer)
-{
-    $entitlements = MonthlyEntitlement::with('product')
-        ->where('card_category_id', $customer->card_category_id)
-        ->get();
-
-    $rows = [];
-
-    foreach ($entitlements as $entitlement) {
-        $given = $this->givenThisMonth(
-            $customer->id,
-            $entitlement->product_id
-        );
-
-        $rows[] = [
-            'product'   => $entitlement->product,
-            'monthly'   => $entitlement->quantity,
-            'given'     => $given,
-            'remaining' => max($entitlement->quantity - $given, 0),
-        ];
-    }
-
-    return $rows;
-}
-
-    public function givenThisMonth($customerId, $productId)
     {
-        return DistributionItem::where('product_id', $productId)
-            ->whereHas('distribution', function ($query) use ($customerId) {
-                $query->where('customer_id', $customerId)
-                    ->whereMonth('distribution_date', now()->month)
-                    ->whereYear('distribution_date', now()->year);
-            })
-            ->sum('quantity');
+        $entitlements = MonthlyEntitlement::with('product')
+            ->where('card_category_id', $customer->card_category_id)
+            ->get();
+
+        $result = [];
+
+        foreach ($entitlements as $entitlement) {
+
+            $given = DistributionItem::where('product_id', $entitlement->product_id)
+                ->whereHas('distribution', function ($query) use ($customer) {
+                    $query->where('customer_id', $customer->id)
+                        ->whereMonth('distribution_date', now()->month)
+                        ->whereYear('distribution_date', now()->year);
+                })
+                ->sum('quantity');
+
+            $result[] = [
+                'product' => $entitlement->product,
+                'monthly' => $entitlement->quantity,
+                'given' => $given,
+                'remaining' => $entitlement->quantity - $given,
+            ];
+        }
+
+        return $result;
     }
 
     public function store(array $data, $operatorId)
     {
-        $quantities = array_filter($data['quantities'], fn ($quantity) => $quantity > 0);
+        DB::transaction(function () use ($data, $operatorId) {
 
-        if (empty($quantities)) {
-            $this->fail('Enter a quantity for at least one product.');
-        }
-
-        DB::transaction(function () use ($data, $operatorId, $quantities) {
             $customer = Customer::findOrFail($data['customer_id']);
 
             $distribution = Distribution::create([
-                'customer_id'       => $customer->id,
-                'operator_id'       => $operatorId,
+                'customer_id' => $customer->id,
+                'operator_id' => $operatorId,
                 'distribution_date' => $data['distribution_date'],
-                'notes'             => $data['notes'] ?? null,
+                'notes' => $data['notes'] ?? null,
             ]);
 
-            foreach ($quantities as $productId => $quantity) {
-                $entitlement = MonthlyEntitlement::with('product')
-                    ->where('card_category_id', $customer->card_category_id)
-                    ->where('product_id', $productId)
-                    ->first();
+            foreach ($data['quantities'] as $productId => $quantity) {
+                if ($quantity <= 0) {
+                    continue;
+                }
+                $entitlement = MonthlyEntitlement::where('card_category_id', $customer->card_category_id)->where('product_id', $productId)->first();
 
                 if (!$entitlement) {
-                    $this->fail('This product is not allowed for this ration card category.');
+                    throw ValidationException::withMessages(['quantities' => 'This product is not allowed for this ration card category.']);
                 }
 
                 $product = $entitlement->product;
-                $given = $this->givenThisMonth($customer->id, $productId);
+                $given = DistributionItem::where('product_id', $productId)->whereHas('distribution', function ($query) use ($customer) {
+                        $query->where('customer_id', $customer->id)->whereMonth('distribution_date', now()->month)->whereYear('distribution_date', now()->year);
+                    })
+                    ->sum('quantity');
 
-                if ($given + $quantity > $entitlement->quantity) {
-                    $this->fail($product->name . ' is more than the monthly limit.');
+                if (($given + $quantity) > $entitlement->quantity) {
+                    throw ValidationException::withMessages(['quantities' => $product->name . ' exceeds the monthly entitlement.']);
                 }
 
                 if ($quantity > $product->available_stock) {
-                    $this->fail('Not enough stock for ' . $product->name . '.');
+                    throw ValidationException::withMessages(['quantities' => 'Not enough stock for ' . $product->name . '.']);
                 }
 
                 DistributionItem::create([
                     'distribution_id' => $distribution->id,
-                    'product_id'      => $productId,
-                    'quantity'        => $quantity,
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
                 ]);
 
                 Stock::create([
-                    'product_id'       => $productId,
-                    'quantity'         => $quantity,
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
                     'transaction_type' => 'deduction',
-                    'notes'            => 'Ration distribution',
+                    'notes' => 'Ration distribution',
                     'transaction_date' => $data['distribution_date'],
                 ]);
 
                 $product->decrement('available_stock', $quantity);
             }
         });
-    }
-
-    private function fail($message)
-    {
-        throw ValidationException::withMessages(['quantities' => $message]);
     }
 }

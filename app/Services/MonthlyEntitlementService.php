@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Models\MonthlyEntitlement;
-
+use App\Models\card_categories;
+use App\Models\Product;
 class MonthlyEntitlementService
 {
     /**
@@ -37,5 +38,14 @@ class MonthlyEntitlementService
         MonthlyEntitlement $entitlement
     ): void {
         $entitlement->delete();
+    }
+    public function Categories()
+    {
+        return card_categories::where('is_active', true)->orderBy('name')->get();
+    }
+
+    public function Products()
+    {
+        return Product::where('is_active', true)->orderBy('name')->get();
     }
 }

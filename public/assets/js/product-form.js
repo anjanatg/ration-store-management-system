@@ -62,26 +62,23 @@ $(document).ready(function () {
                 },
 
                 error: function (xhr) {
-                    var message = "Something went wrong. Please try again.";
-                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    if (xhr.status === 422 && xhr.responseJSON.errors) {
                         var errors = xhr.responseJSON.errors;
                         $.each(errors, function (field, messages) {
                             var input = $(form).find('[name="' + field + '"]');
-
                             if (input.length) {
                                 input.addClass("is-invalid");
-
                                 $("<div>")
                                 .addClass("invalid-feedback server-error")
                                 .text(messages[0])
                                 .insertAfter(input);
                             }
                         });
-                        message = Object.values(errors)[0][0];
-                    } else if (xhr.responseJSON && xhr.responseJSON.message) {
-                        message = xhr.responseJSON.message;
+                    } else {
+                        var message = xhr.responseJSON?.message
+                        || "Something went wrong. Please try again.";
+                        $("#productAlert").text(message).removeClass("d-none");
                     }
-                    $("#productAlert").text(message).removeClass("d-none");
                 }
             });
 

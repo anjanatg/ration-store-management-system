@@ -28,7 +28,7 @@
 
         <div class="card-body">
 
-            <form action="{{ route('stock.store') }}" method="POST">
+            <form action="{{ route('stock.store') }}" method="POST" id="stockForm" novalidate>
                 @csrf
 
                 <div class="mb-3">
