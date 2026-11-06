@@ -20,6 +20,7 @@ class MonthlyEntitlementRequest extends FormRequest
             'card_category_id' => ['required','exists:card_categories,id'],
             'product_id' => ['required','exists:products,id',Rule::unique('monthly_entitlements', 'product_id')->where('card_category_id', $this->card_category_id)->ignore($entitlement?->id)],
             'quantity' => ['required','numeric','gt:0'],
+            'price' => ['required','numeric','min:0'],
         ];
     }
 
@@ -36,6 +37,9 @@ class MonthlyEntitlementRequest extends FormRequest
             'quantity.required' => 'Please enter the quantity.',
             'quantity.numeric' => 'Quantity must be a number.',
             'quantity.gt' => 'Quantity must be greater than 0.',
+            'price.required' => 'Please enter the product price.',
+            'price.numeric' => 'Price must be a number.',
+            'price.min' => 'Price cannot be negative.',
         ];
     }
 }

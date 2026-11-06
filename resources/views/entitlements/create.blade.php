@@ -1,91 +1,55 @@
-
 @extends('layouts.app')
 
 @section('title', 'Add Monthly Entitlement')
 
 @section('content')
-<div class="container-fluid">
 
-    <h4 class="mb-4">Add Monthly Entitlement</h4>
+  <h2 class="fw-bold mb-3">Add Monthly Entitlement</h2>
 
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
+  <div class="box">
+    <form id="entitlementForm" novalidate>
+      @csrf
+      <div id="entitlementAlert" class="alert alert-danger d-none"></div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
+      <div class="mb-3">
+        <label for="card_category_id" class="form-label">Ration Card Category</label>
+        <select id="card_category_id" name="card_category_id" class="form-select">
+          <option value="">Select Category</option>
+          @foreach($categories as $category)
+            <option value="{{ $category->id }}">{{ $category->name }}</option>
+          @endforeach 
+        </select>
+      </div>
 
-            <form action="{{ route('entitlements.store') }}" method="POST">
-                @csrf
+      <div class="mb-3">
+        <label for="product_id" class="form-label">Product</label>
+        <select id="product_id" name="product_id" class="form-select">
+          <option value="">Select Product</option>
+          @foreach($products as $product)
+            <option value="{{ $product->id }}">{{ $product->name }}</option>
+          @endforeach
+        </select>
+      </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Ration Card Category</label>
+      <div class="mb-3">
+        <label for="monthly_quantity" class="form-label">Monthly Quantity</label>
+        <input type="number" id="monthly_quantity" name="monthly_quantity" class="form-control" placeholder="Enter monthly quantity">
+      </div>
 
-                    <select name="card_category_id" class="form-select">
-                        <option value="">Select Category</option>
+      <div class="mb-3">
+        <label for="price_per_unit" class="form-label">Price per Unit (₹)</label>
+        <input type="number" id="price_per_unit" name="price_per_unit" class="form-control" value="0">
+        <div class="form-text">Enter 0 if the product is free.</div>
+      </div>
 
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}"
-                                {{ old('card_category_id') == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
+      <button type="submit" class="btn btn-primary">Save Entitlement</button>
+      <a href="{{ route('entitlements.index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
 
-                    @error('card_category_id')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Product</label>
-
-                    <select name="product_id" class="form-select">
-                        <option value="">Select Product</option>
-
-                        @foreach($products as $product)
-                            <option value="{{ $product->id }}"
-                                {{ old('product_id') == $product->id ? 'selected' : '' }}>
-                                {{ $product->name }} ({{ $product->unit }})
-                            </option>
-                        @endforeach
-                    </select>
-
-                    @error('product_id')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Monthly Quantity</label>
-
-                    <input type="number"
-                           name="quantity"
-                           class="form-control"
-                           value="{{ old('quantity') }}"
-                           min="0.01"
-                           step="0.01"
-                           placeholder="Enter monthly quantity">
-
-                    @error('quantity')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <button type="submit" class="btn btn-primary">
-                    Save Entitlement
-                </button>
-
-                <a href="{{ route('entitlements.index') }}" class="btn btn-secondary">
-                    Cancel
-                </a>
-
-            </form>
-
-        </div>
-    </div>
-
-</div>
 @endsection
+
+@push('scripts')
+  <script>const ENTITLEMENT_URL = "{{ route('entitlements.store') }}";</script>
+  <script src="{{ asset('assets/js/entitlement-form.js') }}"></script>
+@endpush

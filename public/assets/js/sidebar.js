@@ -1,26 +1,16 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const toggleButton = document.getElementById('sidebarToggle');
-    const closeButton = document.getElementById('sidebarClose');
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.querySelector('.main-content');
+$(document).ready(function () {
 
-    if (!toggleButton || !sidebar || !mainContent) {
-        console.error('Sidebar toggle elements not found.');
-        return;
-    }
-
-    toggleButton.addEventListener('click', function () {
-        if (window.innerWidth <= 991) {
-            sidebar.classList.toggle('sidebar-open');
+    $(document).on('click', '#sidebarToggle', function () {
+        if ($(window).width() <= 991) {
+            $('#sidebar').toggleClass('sidebar-open');
         } else {
-            sidebar.classList.toggle('sidebar-hidden');
-            mainContent.classList.toggle('expanded');
+            $('#sidebar').toggleClass('sidebar-hidden');
+            $('.main-content').toggleClass('expanded');
         }
     });
 
-    if (closeButton) {
-        closeButton.addEventListener('click', function () {
-            sidebar.classList.remove('sidebar-open');
-        });
-    }
+    $(document).on('click', '#sidebarClose', function () {
+        $('#sidebar').removeClass('sidebar-open');
+    });
+
 });

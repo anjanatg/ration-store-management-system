@@ -53,15 +53,6 @@
           @enderror
         </div>
 
-        <div class="col-md-6">
-          <label for="price" class="form-label">Price (₹)</label>
-          <input type="number" name="price" id="price" min="0" step="0.01"
-                 class="form-control @error('price') is-invalid @enderror"
-                 value="{{ old('price') }}" placeholder="Enter price">
-          @error('price')
-            <div class="invalid-feedback">{{ $message }}</div>
-          @enderror
-        </div>
 
         <div class="col-md-6">
           <label for="available_stock" class="form-label">Available Stock</label>

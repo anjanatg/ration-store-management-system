@@ -19,7 +19,7 @@ class CustomerService
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
                     ->orWhere('ration_card_number', 'like', "%{$search}%");
-            })->latest()->get();
+            })->latest()->paginate(8);
     }
 
     public function getCustomerById(int $id): Customer

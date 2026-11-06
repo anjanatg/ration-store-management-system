@@ -11,9 +11,7 @@
     </div>
     <span class="text-secondary"><i class="bi bi-calendar3"></i> {{ now()->format('l, d F Y') }}</span>
   </div>
-
-  {{-- Top statistic cards --}}
-  <div class="row g-3 mb-4">
+  <div class="row g-3 mb-4"> 
 
     <div class="col-md-6 col-xl-3">
       <div class="stat-card blue">
@@ -59,18 +57,14 @@
         <small class="text-secondary w-100">In {{ now()->format('F Y') }}</small>
       </div>
     </div>
-
   </div>
 
   <div class="row g-3 mb-4">
 
-    {{-- Monthly distribution chart --}}
     <div class="col-lg-7">
       <div class="box">
         <h5 class="fw-bold mb-4">Monthly Distribution</h5>
-
         @php
-          // Highest month is the 100% bar (at least 1 to avoid dividing by zero)
           $maxTotal = max($monthlyChart->max('total'), 1);
         @endphp
 
@@ -86,14 +80,12 @@
       </div>
     </div>
 
-    {{-- Low stock alerts --}}
     <div class="col-lg-5">
       <div class="box">
         <div class="d-flex justify-content-between mb-3">
           <h5 class="fw-bold"><i class="bi bi-exclamation-triangle-fill text-danger"></i> Low Stock Alerts</h5>
           <a href="{{ route('products.index') }}" class="text-decoration-none">View All</a>
         </div>
-
         <table class="table table-sm align-middle">
           <thead class="table-light">
             <tr><th>Product</th><th>Current Stock</th></tr>
@@ -111,13 +103,10 @@
         </table>
       </div>
     </div>
-
   </div>
 
   <div class="row g-3">
 
-
-    {{-- Quick actions --}}
     <div class="col-lg-12">
       <div class="box">
         <h5 class="fw-bold mb-3"><i class="bi bi-lightning-charge"></i> Quick Actions</h5>
@@ -130,19 +119,19 @@
             </a>
           </div>
           <div class="col-6">
-            <a href="#" class="action-card green">
+            <a href="{{ route('customers.index')}}" class="action-card green">
               <i class="bi bi-people-fill"></i>
               <span>Register Customer</span>
             </a>
           </div>
           <div class="col-6">
-            <a href="#" class="action-card purple">
+            <a href="{{ route('stock.index') }}" class="action-card purple">
               <i class="bi bi-database-fill"></i>
               <span>Stock Entry</span>
             </a>
           </div>
           <div class="col-6">
-            <a href="#" class="action-card orange">
+            <a href="{{ route('distribution.create') }}" class="action-card orange">
               <i class="bi bi-truck"></i>
               <span>New Distribution</span>
             </a>

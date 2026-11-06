@@ -38,8 +38,18 @@ class DistributionController extends Controller
 
     public function store(DistributionRequest $request)
     {
-        $this->distributionService->store($request->validated(), auth()->id());
-
-        return redirect()->route('distribution.index')->with('success', 'Ration distributed successfully.');
+        try {
+    
+            $this->distributionService->store($request->validated(),auth()->id());
+            return response()->json(['success' => true,'redirect' => route('distribution.index')]);
+        } catch (\Throwable $e) {
+            if ($e instanceof \Illuminate\Validation\ValidationException) {throw $e;
+            }
+            report($e);
+            return response()->json([
+                'message' => 'Unable to save distribution. Please try again.'
+            ], 500);
+        }
     }
+
 }

@@ -36,7 +36,6 @@
             <th>Product Name</th>
             <th>Category</th>
             <th>Unit</th>
-            <th>Price</th>
             <th>Available Stock</th>
             <th>Status</th>
             <th class="text-end">Actions</th>
@@ -49,7 +48,6 @@
               <td>{{ $product->name }}</td>
               <td>{{ $product->category->name ?? 'N/A' }}</td>
               <td>{{ ucfirst($product->unit) }}</td>
-              <td>₹{{ number_format((float) $product->price, 2) }}</td>
               <td>{{ $product->available_stock }} {{ $product->unit }}</td>
               <td>
                 @if ($product->is_active)
