@@ -17,7 +17,7 @@ class StockController extends Controller
     public function index()
     {
         try {
-            $stocks = $this->stockService->getAllStocks();
+            $stocks = $this->stockService->AllStocks();
             return view('stock.index', compact('stocks'));
 
         } catch (Throwable $e) {

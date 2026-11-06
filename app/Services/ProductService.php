@@ -29,25 +29,21 @@ class ProductService
         return $query->latest()->get();
     }
 
-    
     public function ProductById(int $id): Product
     {
         return Product::with('category')->findOrFail($id);
     }
 
-   
     public function createProduct(array $data): Product
     {
         return Product::create($data);
     }
 
-   
     public function updateProduct(Product $product, array $data): bool
     {
         return $product->update($data);
     }
 
-   
     public function deactivateProduct(Product $product): bool
     {
         return $product->update([

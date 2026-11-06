@@ -17,7 +17,7 @@ class ReportController extends Controller
     public function index(ReportFilterRequest $request)
     {
         try {
-            $reports = $this->reportService->getDistributionReport($request->validated());
+            $reports = $this->reportService->DistributionReport($request->validated());
             $customers = Customer::all();
             $products = Product::where('is_active', true)->get();
             $cardCategories = card_categories::where('is_active', true)->get();
@@ -33,7 +33,7 @@ class ReportController extends Controller
     public function export(ReportFilterRequest $request)
     {
         try {
-            $reports = $this->reportService->getDistributionReport($request->validated());
+            $reports = $this->reportService->DistributionReport($request->validated());
 
             $csv = "Date,Customer,Ration Card,Category,Product,Quantity,Operator\n";
 

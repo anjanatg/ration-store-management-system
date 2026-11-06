@@ -15,7 +15,7 @@ class DistributionController extends Controller
 
     public function index()
     {
-        $distributions = $this->distributionService->getAllDistributions();
+        $distributions = $this->distributionService->AllDistributions();
         return view('distribution.index', compact('distributions'));
     }
 
@@ -29,7 +29,7 @@ class DistributionController extends Controller
             $customer = Customer::with('cardCategory')->find($request->customer_id);
 
             if ($customer) {
-                $rows = $this->distributionService->getCustomerEntitlements($customer);
+                $rows = $this->distributionService->CustomerEntitlements($customer);
             }
         }
 

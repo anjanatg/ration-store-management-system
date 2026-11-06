@@ -14,7 +14,7 @@ class MonthlyEntitlementService
     {
         //
     }
-    public function getAllEntitlements()
+    public function AllEntitlements()
     {
         return MonthlyEntitlement::with([
             'cardCategory',

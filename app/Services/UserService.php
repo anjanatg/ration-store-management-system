@@ -55,7 +55,6 @@ class UserService
         else {
             $data['password'] = Hash::make($data['password']);
         }
-
         $user->update($data);
     }
 

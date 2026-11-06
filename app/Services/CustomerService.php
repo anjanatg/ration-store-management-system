@@ -12,7 +12,7 @@ class CustomerService
     {
         //
     }
-    public function getAllCustomers(?string $search = null)
+    public function allCustomers(?string $search = null)
     {
         return Customer::with('cardCategory')
             ->when($search, function ($query) use ($search) {
@@ -22,7 +22,7 @@ class CustomerService
             })->latest()->paginate(8);
     }
 
-    public function getCustomerById(int $id): Customer
+    public function customerById(int $id): Customer
     {
         return Customer::with('cardCategory')->findOrFail($id);
     }
