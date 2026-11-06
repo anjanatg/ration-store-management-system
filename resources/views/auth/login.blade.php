@@ -60,13 +60,7 @@
                             {{ $message }}
                         </div>
                     @enderror
-                </div>
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="form-check">
-                        <input type="checkbox" id="remember" name="remember" value="1" class="form-check-input">
-                        <label for="remember" class="form-check-label">Remember me</label>
-                    </div>
-                </div>
+                </div><br>
 
                 <button type="submit" class="btn btn-primary w-100">
                     <i class="bi bi-box-arrow-in-right me-2"></i>

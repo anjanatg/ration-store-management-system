@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Monthly Entitlements')
@@ -14,12 +13,6 @@
         </a>
     </div>
 
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-
     <div class="card shadow-sm">
         <div class="card-body table-responsive">
 
@@ -30,6 +23,7 @@
                         <th>Card Category</th>
                         <th>Product</th>
                         <th>Monthly Quantity</th>
+                        <th>Price per Unit</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -50,6 +44,15 @@
                             <td>
                                 {{ $entitlement->quantity }}
                                 {{ $entitlement->product->unit }}
+                            </td>
+
+                            <td>
+                                @if($entitlement->price == 0)
+                                    <span class="badge bg-success">Free</span>
+                                @else
+                                    ₹{{ number_format($entitlement->price, 2) }}
+                                    / {{ $entitlement->product->unit }}
+                                @endif
                             </td>
 
                             <td>
@@ -74,7 +77,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">
+                            <td colspan="6" class="text-center">
                                 No monthly entitlements found.
                             </td>
                         </tr>

@@ -20,7 +20,6 @@ return new class extends Migration
 
             $table->string('name');
             $table->string('unit');
-            $table->decimal('price', 10, 2)->default(0);
             $table->decimal('available_stock', 10, 2)->default(0);
             $table->boolean('is_active')->default(true);
 

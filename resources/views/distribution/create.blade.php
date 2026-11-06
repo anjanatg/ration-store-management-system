@@ -7,18 +7,8 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>New Distribution</h2>
-
         <a href="{{ route('distribution.index') }}" class="btn btn-secondary">Back</a>
     </div>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-                <div>{{ $error }}</div>
-            @endforeach
-        </div>
-    @endif
-
     <div class="card mb-4">
         <div class="card-header">
             <h5 class="mb-0">Step 1: Choose Customer</h5>
@@ -48,17 +38,16 @@
                     ({{ $customer->cardCategory->name ?? '-' }})
                 </h5>
             </div>
-
             <div class="card-body">
-                <form action="{{ route('distribution.store') }}" method="POST">
+                <form id="distributionForm" novalidate>
                     @csrf
-
+                    <div id="distributionAlert" class="alert alert-danger d-none"></div>
                     <input type="hidden" name="customer_id" value="{{ $customer->id }}">
 
                     <div class="mb-3">
                         <label class="form-label">Date</label>
-                        <input type="date" name="distribution_date" class="form-control"
-                               value="{{ old('distribution_date', date('Y-m-d')) }}" required>
+                        <input type="date" name="distribution_date" class="form-control" value="{{ date('Y-m-d') }}">
+                        <small class="text-danger" data-error="distribution_date"></small>
                     </div>
 
                     <div class="table-responsive">
@@ -81,11 +70,8 @@
                                         <td>{{ $row['given'] }} {{ $row['product']->unit }}</td>
                                         <td>{{ $row['remaining'] }} {{ $row['product']->unit }}</td>
                                         <td>
-                                            <input type="number" step="0.01" min="0"
-                                                   name="quantities[{{ $row['product']->id }}]"
-                                                   class="form-control"
-                                                   value="{{ old('quantities.' . $row['product']->id, $row['remaining']) }}"
-                                                   {{ $row['remaining'] <= 0 ? 'readonly' : '' }}>
+                                            <input type="number" step="0.01" min="0" name="quantities[{{ $row['product']->id }}]" class="form-control quantity" value="0" {{ $row['remaining'] <= 0 ? 'readonly' : '' }}>
+                                            <small class="text-danger" data-error="quantities.{{ $row['product']->id }}"></small>
                                         </td>
                                     </tr>
                                 @empty
@@ -97,11 +83,12 @@
                                 @endforelse
                             </tbody>
                         </table>
+                        <div id="distributionQuantityError" class="text-danger mb-2"></div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Notes</label>
-                        <textarea name="notes" class="form-control" rows="2">{{ old('notes') }}</textarea>
+                        <textarea name="notes" class="form-control" rows="2"></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save Distribution</button>
@@ -109,6 +96,12 @@
             </div>
         </div>
     @endif
-
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        const DISTRIBUTION_URL = "{{ route('distribution.store') }}";
+    </script>
+    <script src="{{ asset('assets/js/distribution-form.js') }}"></script>
+@endpush

@@ -11,7 +11,6 @@ class Product extends Model
         'category_id',
         'name',
         'unit',
-        'price',
         'available_stock',
         'is_active',
     ];
@@ -19,7 +18,6 @@ class Product extends Model
     protected function casts(): array
     {
         return [
-            'price' => 'decimal:2',
             'available_stock' => 'decimal:2',
             'is_active' => 'boolean',
         ];

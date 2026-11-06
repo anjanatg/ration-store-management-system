@@ -16,7 +16,7 @@
   <div class="box">
     <h5 class="fw-bold mb-4"><i class="bi bi-person-plus-fill text-primary"></i> Staff Details</h5>
 
-    <form id="userForm" data-mode="add" action="{{ route('admin.users.store') }}" method="post" novalidate>
+    <form id="userForm" data-mode="add" method="post" novalidate>
       @csrf
       <div id="userAlert" class="alert alert-danger d-none"></div>
 

@@ -1,5 +1,7 @@
 $(document).ready(function () {
+
     $("#productForm").validate({
+
         rules: {
             name: {
                 required: true
@@ -9,11 +11,6 @@ $(document).ready(function () {
             },
             unit: {
                 required: true
-            },
-            price: {
-                required: true,
-                number: true,
-                min: 0
             },
             available_stock: {
                 required: true,
@@ -25,29 +22,30 @@ $(document).ready(function () {
             name: "Please enter the product name.",
             category_id: "Please select a category.",
             unit: "Please select a unit.",
-            price: {
-                required: "Please enter the price.",
-                number: "Price must be a number.",
-                min: "Price cannot be less than 0."
-            },
             available_stock: {
                 required: "Please enter the available stock.",
                 number: "Stock must be a number.",
                 min: "Stock cannot be less than 0."
             }
         },
+
         errorElement: "div",
         errorClass: "invalid-feedback",
+
         errorPlacement: function (error, element) {
             error.insertAfter(element);
         },
+
         highlight: function (element) {
             $(element).addClass("is-invalid");
         },
+
         unhighlight: function (element) {
             $(element).removeClass("is-invalid");
         },
+
         submitHandler: function (form) {
+
             $("#productAlert").addClass("d-none").text("");
             $(".server-error").remove();
 
@@ -62,22 +60,32 @@ $(document).ready(function () {
                 },
 
                 error: function (xhr) {
+
                     if (xhr.status === 422 && xhr.responseJSON.errors) {
+
                         var errors = xhr.responseJSON.errors;
+
                         $.each(errors, function (field, messages) {
+
                             var input = $(form).find('[name="' + field + '"]');
+
                             if (input.length) {
+
                                 input.addClass("is-invalid");
+
                                 $("<div>")
-                                .addClass("invalid-feedback server-error")
-                                .text(messages[0])
-                                .insertAfter(input);
+                                    .addClass("invalid-feedback server-error")
+                                    .text(messages[0])
+                                    .insertAfter(input);
                             }
                         });
                     } else {
                         var message = xhr.responseJSON?.message
-                        || "Something went wrong. Please try again.";
-                        $("#productAlert").text(message).removeClass("d-none");
+                            || "Something went wrong. Please try again.";
+
+                        $("#productAlert")
+                            .text(message)
+                            .removeClass("d-none");
                     }
                 }
             });

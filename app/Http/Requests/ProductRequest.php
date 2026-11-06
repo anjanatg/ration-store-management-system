@@ -29,7 +29,6 @@ class ProductRequest extends FormRequest
             'category_id' => ['required','exists:ration_categories,id'],
             'name' => ['required','string','max:255',Rule::unique('products', 'name')->where('category_id', $this->input('category_id'))->ignore($productId)],
             'unit' => ['required',Rule::in(['kg', 'litre', 'packet'])],
-            'price' => ['required','numeric','min:0'],
             'available_stock' => ['required','numeric','min:0',],
         ];
     }
@@ -43,8 +42,6 @@ class ProductRequest extends FormRequest
             'name.unique' => 'This product already exists in the selected category.',
             'unit.required' => 'Please select a unit.',
             'unit.in' => 'The selected unit is invalid.',
-            'price.required' => 'Please enter the product price.',
-            'price.min' => 'The price cannot be negative.',
             'available_stock.required' => 'Please enter the available stock.',
             'available_stock.min' => 'The available stock cannot be negative.',
         ];

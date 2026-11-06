@@ -1,7 +1,9 @@
  @extends('layouts.app')
 
 @section('title', 'Customer Management')
-
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
+@endpush
 @section('content')
 <div class="container-fluid py-4">
 
@@ -89,6 +91,29 @@
                     </tbody>
                 </table>
             </div>
+            @if ($customers->hasPages())
+    @php $customers->withQueryString(); @endphp
+
+    <div class="d-flex justify-content-end mt-2">
+        <ul class="pagination ">
+
+            <li class="page-item {{ $customers->onFirstPage() ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ $customers->previousPageUrl() }}">Previous</a>
+            </li>
+
+
+            @foreach ($customers->getUrlRange(1, $customers->lastPage()) as $page => $url)
+                <li class="page-item {{ $page == $customers->currentPage() ? 'active' : '' }}">
+                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                </li>
+            @endforeach
+            <li class="page-item {{ $customers->hasMorePages() ? '' : 'disabled' }}">
+                <a class="page-link" href="{{ $customers->nextPageUrl() }}">Next</a>
+            </li>
+
+        </ul>
+    </div>
+@endif
         </div>
     </div>
 

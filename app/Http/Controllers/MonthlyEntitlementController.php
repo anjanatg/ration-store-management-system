@@ -3,16 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MonthlyEntitlementRequest;
-use App\Models\card_categories;
 use App\Models\MonthlyEntitlement;
-use App\Models\Product;
 use App\Services\MonthlyEntitlementService;
+use Exception;
 
 class MonthlyEntitlementController extends Controller
 {
-    public function __construct(private MonthlyEntitlementService $entitlementService) 
+    public function __construct(private MonthlyEntitlementService $entitlementService)
     {}
-    
+
     public function index()
     {
         $entitlements = $this->entitlementService->getAllEntitlements();
@@ -26,30 +25,47 @@ class MonthlyEntitlementController extends Controller
         return view('entitlements.create', compact('categories', 'products'));
     }
 
+
     public function store(MonthlyEntitlementRequest $request)
     {
-        $this->entitlementService->createEntitlement($request->validated());
-        return redirect()->route('entitlements.index')->with('success', 'Monthly entitlement added successfully.');
+        try {
+            $this->entitlementService->createEntitlement($request->validated());
+            session()->flash('success', 'Monthly entitlement added successfully.');
+
+            return response()->json(['success' => true]);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Something went wrong. Please try again.'], 500);
+        }
     }
 
     public function edit(MonthlyEntitlement $monthlyEntitlement)
     {
         $categories = $this->entitlementService->Categories();
         $products = $this->entitlementService->Products();
-        return view('entitlements.edit', compact('monthlyEntitlement','categories','products'
-        ));
+        return view('entitlements.edit', compact('monthlyEntitlement', 'categories', 'products'));
     }
 
-    public function update(MonthlyEntitlementRequest $request, MonthlyEntitlement $monthlyEntitlement) 
+    public function update(MonthlyEntitlementRequest $request, MonthlyEntitlement $monthlyEntitlement)
     {
-        $this->entitlementService->updateEntitlement($monthlyEntitlement,$request->validated());
-        return redirect()->route('entitlements.index')->with('success', 'Monthly entitlement updated successfully.');
+        try {
+            $this->entitlementService->updateEntitlement($monthlyEntitlement, $request->validated());
+
+            return redirect()->route('entitlements.index')
+                ->with('success', 'Monthly entitlement updated successfully.');
+        } catch (Exception $e) {
+            return back()->withInput()->with('error', 'Something went wrong. Please try again.');
+        }
     }
 
     public function destroy(MonthlyEntitlement $monthlyEntitlement)
     {
-        $this->entitlementService->deleteEntitlement($monthlyEntitlement);
-        return redirect()->route('entitlements.index')->with('success', 'Monthly entitlement deleted successfully.');
+        try {
+            $this->entitlementService->deleteEntitlement($monthlyEntitlement);
+
+            return redirect()->route('entitlements.index')
+                ->with('success', 'Monthly entitlement deleted successfully.');
+        } catch (Exception $e) {
+            return back()->with('error', 'Could not delete. This entitlement may be in use.');
+        }
     }
-    
 }

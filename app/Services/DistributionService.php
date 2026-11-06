@@ -67,11 +67,9 @@ class DistributionService
                     continue;
                 }
                 $entitlement = MonthlyEntitlement::where('card_category_id', $customer->card_category_id)->where('product_id', $productId)->first();
-
                 if (!$entitlement) {
                     throw ValidationException::withMessages(['quantities' => 'This product is not allowed for this ration card category.']);
                 }
-
                 $product = $entitlement->product;
                 $given = DistributionItem::where('product_id', $productId)->whereHas('distribution', function ($query) use ($customer) {
                         $query->where('customer_id', $customer->id)->whereMonth('distribution_date', now()->month)->whereYear('distribution_date', now()->year);
@@ -81,17 +79,15 @@ class DistributionService
                 if (($given + $quantity) > $entitlement->quantity) {
                     throw ValidationException::withMessages(['quantities' => $product->name . ' exceeds the monthly entitlement.']);
                 }
-
                 if ($quantity > $product->available_stock) {
                     throw ValidationException::withMessages(['quantities' => 'Not enough stock for ' . $product->name . '.']);
                 }
-
                 DistributionItem::create([
                     'distribution_id' => $distribution->id,
                     'product_id' => $productId,
                     'quantity' => $quantity,
                 ]);
-
+                
                 Stock::create([
                     'product_id' => $productId,
                     'quantity' => $quantity,

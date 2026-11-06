@@ -11,12 +11,14 @@ class MonthlyEntitlement extends Model
         'card_category_id',
         'product_id',
         'quantity',
+        'price',
     ];
 
     protected function casts(): array
     {
         return [
             'quantity' => 'decimal:2',
+            'price' => 'decimal:2',
         ];
     }
 
