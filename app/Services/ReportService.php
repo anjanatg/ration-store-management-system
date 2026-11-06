@@ -6,7 +6,14 @@ use App\Models\Distribution;
 
 class ReportService
 {
-    public function getDistributionReport(array $filters = [])
+    /**
+     * Create a new class instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+    public function DistributionReport(array $filters = [])
     {
         $query = Distribution::with(['customer.cardCategory', 'operator', 'items.product']);
 

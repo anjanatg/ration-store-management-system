@@ -19,7 +19,7 @@ class CustomerController extends Controller
     {
         try {
             $search = $request->input('search');
-            $customers = $this->customerService->getAllCustomers($search);
+            $customers = $this->customerService->AllCustomers($search);
             return view('customers.index', compact('customers', 'search'));
 
         } catch (Throwable $e) {

@@ -16,7 +16,7 @@ class StockService
     {
         //
     }
-    public function getAllStocks()
+    public function AllStocks()
     {
         return Stock::with('product')->latest()->get();
     }

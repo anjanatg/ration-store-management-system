@@ -14,7 +14,7 @@ class MonthlyEntitlementController extends Controller
 
     public function index()
     {
-        $entitlements = $this->entitlementService->getAllEntitlements();
+        $entitlements = $this->entitlementService->AllEntitlements();
         return view('entitlements.index', compact('entitlements'));
     }
 

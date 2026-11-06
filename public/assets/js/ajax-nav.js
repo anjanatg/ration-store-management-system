@@ -20,7 +20,6 @@ $(document).ready(function () {
             });
 
             $("#page-content").html(content.html()).css("opacity", "1");
-
             var title = page.find("title").text();
 
             if (title) {

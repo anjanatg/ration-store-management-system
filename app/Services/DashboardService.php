@@ -8,7 +8,14 @@ use App\Models\Distribution;
 
 class DashboardService
 {
-    public function getDashboardData(): array
+    /**
+     * Create a new class instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+    public function DashboardData(): array
     {
         $totalCustomers = Customer::count();
         $totalProducts = Product::where('is_active', true)->count();
