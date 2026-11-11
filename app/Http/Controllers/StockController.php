@@ -28,7 +28,7 @@ class StockController extends Controller
 
     public function create()
     {
-        try {
+        try { 
             $products = Product::where('is_active', true)->orderBy('name')->get();
             return view('stock.create', compact('products'));
 
@@ -48,12 +48,10 @@ class StockController extends Controller
             } else {
                 $this->stockService->deductStock($data);
             }
-
             return redirect()->route('stock.index')->with('success', 'Stock transaction recorded successfully.');
 
         } catch (Throwable $e) {
             report($e);
-
             return back()->withInput()->with('error', 'Unable to record stock transaction. Please try again.');
         }
     }

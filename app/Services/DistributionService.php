@@ -8,7 +8,7 @@ use App\Models\MonthlyEntitlement;
 use App\Models\Stock;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-
+use App\Models\Product;
 class DistributionService
 {
     /**
@@ -65,7 +65,7 @@ class DistributionService
                     ]);
                 }
 
-                $product = $entitlement->product;
+                $product = Product::where('id', $productId)->lockForUpdate()->firstOrFail();
                 $given = DistributionItem::where('product_id', $productId)
                     ->whereHas('distribution', function ($query) use ($customer) {
                         $query->where('customer_id', $customer->id)->whereMonth('distribution_date', now()->month)->whereYear('distribution_date', now()->year);

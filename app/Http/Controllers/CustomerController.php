@@ -41,16 +41,23 @@ class CustomerController extends Controller
     }
 
     public function store(CustomerRequest $request)
-    {
-        try {
-            $this->customerService->createCustomer($request->validated());
-            return redirect()->route('customers.index')->with('success', 'Customer added successfully.');
+{
+    try {
+        $this->customerService->createCustomer($request->validated());
 
-        } catch (Throwable $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Unable to add customer. Please try again.');
-        }
+        return response()->json([
+            'message' => 'Customer added successfully.',
+            'redirect' => route('customers.index')
+        ]);
+
+    } catch (Throwable $e) {
+        report($e);
+
+        return response()->json([
+            'message' => 'Unable to add customer. Please try again.'
+        ], 500);
     }
+}
 
     public function edit(Customer $customer)
     {
@@ -65,17 +72,23 @@ class CustomerController extends Controller
     }
 
     public function update(CustomerRequest $request, Customer $customer)
-    {
-        try {
-            $this->customerService->updateCustomer($customer,$request->validated());
-            return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
+{
+    try {
+        $this->customerService->updateCustomer($customer, $request->validated());
 
-        } catch (Throwable $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Unable to update customer. Please try again.');
-        }
+        return response()->json([
+            'message'  => 'Customer updated successfully.',
+            'redirect' => route('customers.index')
+        ]);
+
+    } catch (Throwable $e) {
+        report($e);
+
+        return response()->json([
+            'message' => 'Unable to update customer. Please try again.'
+        ], 500);
     }
-
+}
     public function destroy(Customer $customer)
     {
         try {

@@ -12,7 +12,7 @@ $(document).ready(function () {
         messages: {
             email: {
                 required: "Please enter your email.",
-                email: "valid aayitt ulla email kodukk."
+                email: "valid email address is required."
             },
             password: {
                 required: "Please enter your password."

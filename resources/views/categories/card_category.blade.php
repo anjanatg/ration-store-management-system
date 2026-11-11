@@ -21,12 +21,7 @@
                 <div class="row align-items-end">
                     <div class="col-md-8 mb-3">
                         <label for="name" class="form-label">Category Name</label>
-                        <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Enter category name">
-                        @error('name')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter category name">
                     </div>
                     <div class="col-md-4 mb-3">
                         <button type="submit" class="btn btn-primary">

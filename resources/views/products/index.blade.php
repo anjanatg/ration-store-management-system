@@ -47,7 +47,7 @@
               <td>{{ $loop->iteration }}</td>
               <td>{{ $product->name }}</td>
               <td>{{ $product->category->name ?? 'N/A' }}</td>
-              <td>{{ ucfirst($product->unit) }}</td>
+              <td>{{ ucfirst($product->unit) }}</td> 
               <td>{{ $product->available_stock }} {{ $product->unit }}</td>
               <td>
                 @if ($product->is_active)
