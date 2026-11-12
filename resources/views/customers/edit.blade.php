@@ -1,88 +1,105 @@
- @extends('layouts.app')
 
-@section('title', 'Edit Customer')
+@extends('layouts.app')
+
+@section('title', 'Edit Monthly Entitlement')
 
 @section('content')
+
 <div class="container-fluid py-4">
 
-    <div class="mb-4">
-        <h3 class="mb-1">Edit Customer</h3>
-        <p class="text-muted mb-0">Update customer information</p>
-    </div>
+    <h4 class="mb-4">Edit Monthly Entitlement</h4>
 
     <div class="card shadow-sm">
-        <div class="card-header bg-white py-3">
-            <h5 class="mb-0">Customer Details</h5>
-        </div>
-
         <div class="card-body">
 
-            <form action="{{ route('customers.update', $customer->id) }}" method="POST">
+            <div id="entitlementAlert" class="alert alert-danger d-none"></div>
+
+            <form id="entitlementForm" method="POST" novalidate>
                 @csrf
                 @method('PUT')
 
-                <div class="row g-3">
+                <div class="mb-3">
+                    <label class="form-label">Ration Card Category</label>
 
-                    <div class="col-md-6">
-                        <label class="form-label">Customer Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $customer->name) }}" placeholder="Enter customer name">
-                        @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Phone Number <span class="text-danger">*</span></label>
-                        <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $customer->phone) }}" placeholder="Enter phone number">
-                        @error('phone')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <select name="card_category_id" class="form-select">
+                        <option value="">Select Category</option>
 
-                    <div class="col-md-6">
-                        <label class="form-label">Ration Card Number <span class="text-danger">*</span></label>
-                        <input type="text" name="ration_card_number" class="form-control @error('ration_card_number') is-invalid @enderror" value="{{ old('ration_card_number', $customer->ration_card_number) }}" placeholder="Enter ration card number">
-                        @error('ration_card_number')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Ration Card Category <span class="text-danger">*</span></label>
-                        <select name="card_category_id" class="form-select @error('card_category_id') is-invalid @enderror">
-                            <option value="">Select Category</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}"
-                                    {{ old('card_category_id', $customer->card_category_id) == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('card_category_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}"
+                                {{ $monthlyEntitlement->card_category_id == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
 
-                    <div class="col-12">
-                        <label class="form-label">Address <span class="text-danger">*</span></label>
-                        <textarea name="address" rows="3" class="form-control @error('address') is-invalid @enderror" placeholder="Enter customer address">{{ old('address', $customer->address) }}</textarea>
-                        @error('address')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    </select>
 
+                    <div class="text-danger small error-message" data-error="card_category_id"></div>
                 </div>
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-save me-1"></i> Update Customer
-                    </button>
-                    <a href="{{ route('customers.index') }}" class="btn btn-secondary">
-                        Cancel
-                    </a>
+                <div class="mb-3">
+                    <label class="form-label">Product</label>
+
+                    <select name="product_id" class="form-select">
+                        <option value="">Select Product</option>
+
+                        @foreach($products as $product)
+                            <option value="{{ $product->id }}"
+                                {{ $monthlyEntitlement->product_id == $product->id ? 'selected' : '' }}>
+                                {{ $product->name }} ({{ $product->unit }})
+                            </option>
+                        @endforeach
+
+                    </select>
+
+                    <div class="text-danger small error-message" data-error="product_id"></div>
                 </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Monthly Quantity</label>
+
+                    <input type="number"
+                           name="quantity"
+                           class="form-control"
+                           value="{{ $monthlyEntitlement->quantity }}"
+                           min="0.01"
+                           step="0.01">
+
+                    <div class="text-danger small error-message" data-error="quantity"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Price per Unit (₹)</label>
+
+                    <input type="number"
+                           name="price"
+                           class="form-control"
+                           value="{{ $monthlyEntitlement->price }}"
+                           min="0"
+                           step="0.01">
+
+                    <div class="text-danger small error-message" data-error="price"></div>
+
+                    <small class="text-muted">Enter 0 if the product is free.</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Update Entitlement
+                </button>
+
+                <a href="{{ route('entitlements.index') }}" class="btn btn-secondary">
+                    Cancel
+                </a>
 
             </form>
+
         </div>
     </div>
 
 </div>
+
 @endsection
+
+@push('scripts')
+    <script>const ENTITLEMENT_URL = "{{ route('entitlements.update', $monthlyEntitlement->id) }}";</script>
+    <script src="{{ asset('assets/js/entitlement-form.js') }}"></script>
+@endpush

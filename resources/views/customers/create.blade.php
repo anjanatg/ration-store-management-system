@@ -1,4 +1,5 @@
- @extends('layouts.app')
+
+@extends('layouts.app')
 
 @section('title', 'Add Customer')
 
@@ -17,61 +18,49 @@
 
         <div class="card-body">
 
-            <form action="{{ route('customers.store') }}" method="POST">
+            <div id="successMessage" class="alert alert-success d-none"></div>
+
+            <form id="customerForm" method="POST">
                 @csrf
 
                 <div class="row g-3">
 
-
                     <div class="col-md-6">
                         <label class="form-label">Customer Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Enter customer name">
-                        @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <input type="text" name="name" class="form-control" placeholder="Enter customer name">
+                        <div class="text-danger small error-message" data-error="name"></div>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Phone Number <span class="text-danger">*</span></label>
-                        <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" maxlength="10" placeholder="Enter 10 digit phone number">
-                        @error('phone')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <input type="text" name="phone" class="form-control" maxlength="10" placeholder="Enter 10 digit phone number">
+                        <div class="text-danger small error-message" data-error="phone"></div>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Ration Card Number <span class="text-danger">*</span></label>
-                        <input type="text" name="ration_card_number" class="form-control @error('ration_card_number') is-invalid @enderror" value="{{ old('ration_card_number') }}" maxlength="15" placeholder="Enter ration card number">
-                        @error('ration_card_number')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <input type="text" name="ration_card_number" class="form-control" maxlength="15" placeholder="Enter ration card number">
+                        <div class="text-danger small error-message" data-error="ration_card_number"></div>
                     </div>
-
 
                     <div class="col-md-6">
                         <label class="form-label">Ration Card Category <span class="text-danger">*</span></label>
-                        <select name="card_category_id" class="form-select @error('card_category_id') is-invalid @enderror">
+                        <select name="card_category_id" class="form-select">
                             <option value="">Select Category</option>
+
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}"
-                                    {{ old('card_category_id') == $category->id ? 'selected' : '' }}>
+                                <option value="{{ $category->id }}">
                                     {{ $category->name }}
                                 </option>
                             @endforeach
-
                         </select>
-
-                        @error('card_category_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <div class="text-danger small error-message" data-error="card_category_id"></div>
                     </div>
 
                     <div class="col-12">
                         <label class="form-label">Address <span class="text-danger">*</span></label>
-                        <textarea name="address" rows="3" class="form-control @error('address') is-invalid @enderror" placeholder="Enter customer address">{{ old('address') }}</textarea>
-                        @error('address')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <textarea name="address" rows="3" class="form-control" placeholder="Enter customer address"></textarea>
+                        <div class="text-danger small error-message" data-error="address"></div>
                     </div>
 
                 </div>
@@ -92,3 +81,9 @@
 
 </div>
 @endsection
+@push('scripts')
+    <script>
+        const CUSTOMER_URL = "{{ route('customers.store') }}";
+    </script>
+    <script src="{{ asset('assets/js/customer-form.js') }}"></script>
+@endpush

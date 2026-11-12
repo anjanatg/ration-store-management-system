@@ -11,9 +11,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
 
-            <form action="{{ route('entitlements.update', $monthlyEntitlement->id) }}"
-                  method="POST">
-
+            <form method="POST" novalidate>
                 @csrf
                 @method('PUT')
 
@@ -100,3 +98,7 @@
 
 </div>
 @endsection
+@push('scripts')
+    <script>const ENTITLEMENT_URL = "{{ route('entitlements.update', $monthlyEntitlement->id) }}";</script>
+    <script src="{{ asset('assets/js/entitlement-form.js') }}"></script>
+@endpush

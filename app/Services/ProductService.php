@@ -13,7 +13,7 @@ class ProductService
     {
         //
     }
-    public function AllProducts(?string $search = null)
+    public function allProducts(?string $search = null)
     {
         $query = Product::with('category');
 

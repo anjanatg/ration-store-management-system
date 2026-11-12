@@ -36,19 +36,14 @@ class StockRequest extends FormRequest
         return [
             'product_id.required' => 'Please select a product.',
             'product_id.exists'   => 'The selected product is invalid.',
-
             'quantity.required' => 'Please enter the quantity.',
             'quantity.numeric'  => 'Quantity must be a number.',
             'quantity.gt'       => 'Quantity must be greater than 0.',
-
             'transaction_type.required' => 'Please select the transaction type.',
             'transaction_type.in'       => 'Transaction type must be addition or deduction.',
-
             'supplier_name.string' => 'Supplier name must be text.',
             'supplier_name.max'    => 'Supplier name cannot be more than 255 characters.',
-
             'notes.string' => 'Notes must be text.',
-
             'transaction_date.required' => 'Please select the transaction date.',
             'transaction_date.date'     => 'Please enter a valid transaction date.',
         ];

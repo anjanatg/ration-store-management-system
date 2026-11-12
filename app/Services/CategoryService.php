@@ -13,7 +13,7 @@ class CategoryService
     {
         //
     }
-    public function AllCategories()
+    public function allCategories()
     {
         return RationCategory::where('is_active', true)->orderBy('name')->get();
     }
